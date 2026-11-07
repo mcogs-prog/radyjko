@@ -1,0 +1,19 @@
+<Window x:Class="RADYJKO.MicroWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RADYJKO Micro" Height="140" Width="140"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" ShowInTaskbar="False" WindowStartupLocation="Manual"
+        MouseDown="Window_MouseDown" MouseDoubleClick="Window_MouseDoubleClick">
+    <Grid>
+        <Border Width="120" Height="120" CornerRadius="60" Background="#990D0D10" BorderBrush="#38BDF8" BorderThickness="2" ClipToBounds="True" Cursor="Hand">
+            <Grid>
+                <Image x:Name="ImgCoverArt" Stretch="UniformToFill" Opacity="0.85"/>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Background="#66000000" Width="120">
+                    <TextBlock x:Name="TxtStation" Text="RADYJKO" FontSize="11" FontWeight="Bold" Foreground="#FAFAFA" TextAlignment="Center" Margin="5,2" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="TxtTrack" Text="Kliknij 2x" FontSize="9" Foreground="#38BDF8" TextAlignment="Center" TextWrapping="Wrap" Margin="5,0,5,2"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
