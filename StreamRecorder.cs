@@ -13,12 +13,17 @@ public class StreamRecorder : IDisposable
     private static readonly string RecordFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "RADYJKO");
 
     public bool IsRecording { get; private set; }
+    public bool AutoSplitOnTrackChange { get; set; } = true;
+    private string? _activeUrl;
+    private string? _activeStation;
     public string? CurrentFilePath { get; private set; }
     public event Action<bool, string>? RecordingStateChanged;
 
     public void StartRecording(string streamUrl, string stationName, string? currentTrack)
     {
         StopRecording();
+        _activeUrl = streamUrl;
+        _activeStation = stationName;
         Directory.CreateDirectory(RecordFolder);
         var baseName = !string.IsNullOrWhiteSpace(currentTrack) ? $"{stationName} - {currentTrack}" : $"{stationName}_{DateTime.Now:yyyyMMdd_HHmmss}";
         foreach (char c in Path.GetInvalidFileNameChars()) baseName = baseName.Replace(c, '_');
@@ -41,9 +46,18 @@ public class StreamRecorder : IDisposable
                 while ((read = await stream.ReadAsync(buffer, token)) > 0) await fs.WriteAsync(buffer.AsMemory(0, read), token);
             }
             catch { }
-            finally { IsRecording = false; RecordingStateChanged?.Invoke(false, CurrentFilePath ?? ""); }
+            finally { if (!token.IsCancellationRequested) { IsRecording = false; RecordingStateChanged?.Invoke(false, CurrentFilePath ?? ""); } }
         }, token);
     }
+
+    public void OnTrackChangedDuringRecording(string newTrack)
+    {
+        if (IsRecording && AutoSplitOnTrackChange && !string.IsNullOrWhiteSpace(_activeUrl) && !string.IsNullOrWhiteSpace(_activeStation) && !string.IsNullOrWhiteSpace(newTrack))
+        {
+            StartRecording(_activeUrl, _activeStation, newTrack);
+        }
+    }
+
     public void StopRecording() { _cts?.Cancel(); _cts?.Dispose(); _cts = null; IsRecording = false; RecordingStateChanged?.Invoke(false, CurrentFilePath ?? ""); }
     public void Dispose() => StopRecording();
 }

@@ -1,7 +1,7 @@
 <Window x:Class="RADYJKO.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="RADYJKO 3.3.0 • OGŚ" Height="780" Width="550"
+        Title="RADYJKO PRO 5.0.0 FINAL • OGŚ" Height="855" Width="590"
         WindowStartupLocation="CenterScreen"
         Background="#0D0D10" Foreground="#FAFAFA"
         ResizeMode="CanMinimize"
@@ -45,8 +45,9 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="16">
+    <Grid x:Name="RootGrid" Margin="16">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -54,20 +55,21 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- HEADER -->
         <DockPanel Grid.Row="0" Margin="0,0,0,10">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="📻 RADYJKO" FontSize="20" FontWeight="Bold" Foreground="#38BDF8"/>
-                <Border Background="#3B82F6" CornerRadius="4" Padding="4,1" Margin="8,4,0,0">
-                    <TextBlock Text="3.3 MULTI+DE" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Image Source="assets/app_icon.png" Width="26" Height="26" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                <TextBlock Text="📻 RADYJKO" FontSize="20" FontWeight="Bold" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                <Border Background="#0284C7" CornerRadius="4" Padding="5,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="PRO 5.0 FINAL" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"/>
                 </Border>
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <!-- Highlighted Language Selector Pill -->
                 <Border Background="#1E293B" BorderBrush="#38BDF8" BorderThickness="1.5" CornerRadius="6" Padding="4,2" Margin="0,0,6,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🌐" FontSize="12" VerticalAlignment="Center" Margin="2,0,4,0"/>
-                        <ComboBox x:Name="ComboLang" Width="65" Height="24" SelectionChanged="ComboLang_SelectionChanged" Background="#0F172A" Foreground="#38BDF8" FontWeight="Bold" BorderThickness="0">
+                        <ComboBox x:Name="ComboLang" Width="68" Height="24" SelectionChanged="ComboLang_SelectionChanged" Background="#0F172A" Foreground="#38BDF8" FontWeight="Bold" BorderThickness="0">
                             <ComboBoxItem Content="🇵🇱 PL"/>
                             <ComboBoxItem Content="🇬🇧 EN"/>
                             <ComboBoxItem Content="🇱🇹 LT"/>
@@ -81,47 +83,92 @@
             </StackPanel>
         </DockPanel>
 
-        <Border Grid.Row="1" Background="#CC141418" BorderBrush="#222228" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,0,0,12">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <!-- NOW PLAYING BANNER -->
+        <Border x:Name="BannerCard" Grid.Row="1" Background="#CC141418" BorderBrush="#222228" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,0,0,10">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Border Width="88" Height="88" CornerRadius="8" Background="#1C1C22" ClipToBounds="True" Margin="0,0,14,0">
-                    <Grid>
-                        <TextBlock Text="🎵" FontSize="34" Foreground="#3F3F46" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Image x:Name="ImgCoverArt" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Grid>
-                </Border>
+                    <Border Width="92" Height="92" CornerRadius="8" Background="#1C1C22" ClipToBounds="True" Margin="0,0,14,0">
+                        <Grid>
+                            <TextBlock Text="🎵" FontSize="34" Foreground="#3F3F46" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Image x:Name="ImgCoverArt" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Grid>
+                    </Border>
 
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <DockPanel>
-                        <TextBlock x:Name="TxtCurrentStation" Text="Wybierz stację..." FontSize="16" FontWeight="Bold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis" MaxWidth="230"/>
-                        <TextBlock x:Name="TxtStatus" Text="Gotowy" FontSize="11" Foreground="#38BDF8" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    </DockPanel>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <DockPanel>
+                            <TextBlock x:Name="TxtCurrentStation" Text="Wybierz stację..." FontSize="16" FontWeight="Bold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis" MaxWidth="260"/>
+                            <TextBlock x:Name="TxtStatus" Text="Gotowy" FontSize="11" Foreground="#38BDF8" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </DockPanel>
 
-                    <DockPanel Margin="0,4,0,6">
-                        <Button x:Name="BtnSpotify" Content="💚 Spotify" Width="70" Height="22" FontSize="10" Background="#1DB954" Foreground="#09090B" FontWeight="Bold" DockPanel.Dock="Right" Click="BtnSpotify_Click"/>
-                        <TextBlock x:Name="TxtTrackInfo" Text="Brak aktywnego utworu" FontSize="12" Foreground="#A1A1AA" TextTrimming="CharacterEllipsis" Margin="0,0,6,0"/>
-                    </DockPanel>
+                        <DockPanel Margin="0,5,0,6">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Button x:Name="BtnRecognizeSong" Content="🎙 ID" Width="46" Height="22" FontSize="10" Background="#8B5CF6" Foreground="White" FontWeight="Bold" Margin="0,0,4,0" Click="BtnRecognizeSong_Click" ToolTip="Rozpoznaj utwór (WASAPI + Music ID)"/>
+                                <Button x:Name="BtnQuickYouTube" Content="▶ YT" Width="46" Height="22" FontSize="10" Background="#DC2626" Foreground="White" FontWeight="Bold" Click="BtnQuickYouTube_Click" ToolTip="Szukaj utworu na YouTube"/>
+                            </StackPanel>
+                            <TextBlock x:Name="TxtTrackInfo" Text="Brak aktywnego utworu" FontSize="12" Foreground="#A1A1AA" TextTrimming="CharacterEllipsis" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        </DockPanel>
 
-                    <UniformGrid Columns="8" Height="20" VerticalAlignment="Bottom">
-                        <ProgressBar x:Name="Bar0" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar1" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar2" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar3" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar4" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar5" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar6" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                        <ProgressBar x:Name="Bar7" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.05" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="2,0"/>
-                    </UniformGrid>
-                </StackPanel>
-            </Grid>
+                        <UniformGrid Columns="12" Height="22" VerticalAlignment="Bottom">
+                            <ProgressBar x:Name="Bar0" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar1" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#38BDF8" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar2" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#22D3EE" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar3" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#22D3EE" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar4" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#2DD4BF" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar5" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#2DD4BF" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar6" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#34D399" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar7" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#34D399" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar8" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#A3E635" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar9" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#A3E635" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar10" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#FACC15" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                            <ProgressBar x:Name="Bar11" Orientation="Vertical" Minimum="0" Maximum="1" Value="0.04" Foreground="#F87171" Background="#1D1D24" BorderThickness="0" Margin="1.5,0"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                        <TextBlock Text="VU L" FontSize="8" FontWeight="Bold" Foreground="#38BDF8"/>
+                        <TextBlock Text="VU R" FontSize="8" FontWeight="Bold" Foreground="#10B981" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <ProgressBar x:Name="VuLeft" Height="5" Minimum="0" Maximum="1" Value="0" Background="#1A1A22" BorderThickness="0" Margin="0,0,0,3">
+                            <ProgressBar.Foreground>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#10B981" Offset="0.0"/>
+                                    <GradientStop Color="#38BDF8" Offset="0.65"/>
+                                    <GradientStop Color="#F59E0B" Offset="0.85"/>
+                                    <GradientStop Color="#EF4444" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </ProgressBar.Foreground>
+                        </ProgressBar>
+                        <ProgressBar x:Name="VuRight" Height="5" Minimum="0" Maximum="1" Value="0" Background="#1A1A22" BorderThickness="0">
+                            <ProgressBar.Foreground>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#10B981" Offset="0.0"/>
+                                    <GradientStop Color="#38BDF8" Offset="0.65"/>
+                                    <GradientStop Color="#F59E0B" Offset="0.85"/>
+                                    <GradientStop Color="#EF4444" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </ProgressBar.Foreground>
+                        </ProgressBar>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
         </Border>
 
-        <Grid Grid.Row="2" Margin="0,0,0,12">
+        <!-- PLAYBACK CONTROLS -->
+        <Grid Grid.Row="2" Margin="0,0,0,8">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -132,17 +179,39 @@
                     Background="#38BDF8" Foreground="#09090B" FontWeight="Bold" Margin="0,0,8,0"
                     Click="BtnTogglePlay_Click"/>
 
-            <Button x:Name="BtnRecord" Grid.Column="1" Content="⏺ REC" Width="70" Height="34" 
+            <Button x:Name="BtnRecord" Grid.Column="1" Content="⏺ REC" Width="68" Height="34" 
                     Background="#1E1E24" Foreground="#EF4444" FontWeight="Bold" Margin="0,0,8,0"
                     Click="BtnRecord_Click"/>
 
-            <Slider x:Name="SliderVolume" Grid.Column="2" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="0.75" 
-                    ValueChanged="SliderVolume_ValueChanged" Margin="6,0"/>
+            <Button x:Name="BtnMute" Grid.Column="2" Content="🔊" Width="34" Height="34" 
+                    Background="#1E1E24" Foreground="#38BDF8" FontSize="14" Margin="0,0,8,0"
+                    Click="BtnMute_Click"/>
 
-            <TextBlock Grid.Column="3" x:Name="TxtVolume" Text="75%" VerticalAlignment="Center" FontSize="11" Foreground="#A1A1AA" Width="32" TextAlignment="Right"/>
+            <Slider x:Name="SliderVolume" Grid.Column="3" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="0.75" 
+                    ValueChanged="SliderVolume_ValueChanged" Margin="2,0,6,0"/>
+
+            <TextBlock Grid.Column="4" x:Name="TxtVolume" Text="75%" VerticalAlignment="Center" FontSize="11" Foreground="#A1A1AA" Width="32" TextAlignment="Right"/>
         </Grid>
 
-        <TabControl x:Name="MainTabControl" Grid.Row="3" Background="Transparent" BorderThickness="0">
+        <!-- TIME-SHIFTING LIVE DVR BAR -->
+        <Border Grid.Row="3" Background="#CC16161D" BorderBrush="#242430" BorderThickness="1" CornerRadius="8" Padding="6,4" Margin="0,0,0,10">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="⏪ TIME-SHIFT:" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" VerticalAlignment="Center" Margin="2,0,6,0"/>
+                    <Button Content="-30s" Padding="7,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnRewind30_Click" ToolTip="Cofnij audycję o 30 sekund"/>
+                    <Button Content="-15s" Padding="7,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnRewind15_Click" ToolTip="Cofnij audycję o 15 sekund"/>
+                    <Button x:Name="BtnTimeShiftPause" Content="⏸ Buforuj" Padding="8,2" FontSize="10.5" Background="#252532" Foreground="#F59E0B" FontWeight="Bold" Margin="0,0,4,0" Click="BtnTimeShiftPause_Click" ToolTip="Pauza z buforowaniem w tle"/>
+                    <Button Content="+15s" Padding="7,2" FontSize="10.5" Margin="0,0,6,0" Click="BtnForward15_Click" ToolTip="Przewiń do przodu o 15 sekund"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock x:Name="TxtTimeShiftStatus" Text="● LIVE" FontSize="10.5" FontWeight="Bold" Foreground="#10B981" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Button x:Name="BtnJumpLive" Content="NA ŻYWO" Padding="7,2" FontSize="10" Background="#059669" Foreground="White" FontWeight="Bold" Click="BtnJumpLive_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- TABS -->
+        <TabControl x:Name="MainTabControl" Grid.Row="4" Background="Transparent" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Foreground" Value="#A1A1AA"/>
@@ -167,16 +236,18 @@
                 </Style>
             </TabControl.Resources>
 
+            <!-- TAB STATIONS -->
             <TabItem x:Name="TabStationsHeader" Header="★ Stacje">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="6">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         
-                        <Border Grid.Row="0" Background="#191920" CornerRadius="6" Padding="8" Margin="0,0,0,8">
+                        <Border Grid.Row="0" Background="#191920" CornerRadius="6" Padding="8" Margin="0,0,0,6">
                             <StackPanel>
                                 <TextBlock x:Name="LblAddCustom" Text="Dodaj własną stację (URL / M3U / PLS)" FontWeight="Bold" Foreground="#FAFAFA" Margin="0,0,0,6"/>
                                 <Grid Margin="0,0,0,6">
@@ -190,13 +261,18 @@
                                 <Button x:Name="BtnAddCustom" Content="➕ Dodaj do listy" Height="26" Background="#38BDF8" Foreground="#09090B" FontWeight="Bold" Click="BtnAddCustomStation_Click"/>
                             </StackPanel>
                         </Border>
+
+                        <Grid Grid.Row="1" Margin="0,0,0,6">
+                            <TextBox x:Name="TxtFilterStations" Text="" Height="26" Foreground="#FAFAFA" TextChanged="TxtFilterStations_TextChanged" Padding="6,3"/>
+                            <TextBlock x:Name="TxtFilterPlaceholder" Text="⚡ Szybkie filtrowanie ulubionych stacji..." FontSize="10" Foreground="#64748B" IsHitTestVisible="False" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        </Grid>
                         
-                        <ListBox Grid.Row="1" x:Name="ListFavorites" Background="Transparent" BorderThickness="0" SelectionChanged="ListFavorites_SelectionChanged">
+                        <ListBox Grid.Row="2" x:Name="ListFavorites" Background="Transparent" BorderThickness="0" SelectionChanged="ListFavorites_SelectionChanged">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding="8,6" Background="#191920" CornerRadius="6" Margin="0,0,0,3">
                                         <DockPanel>
-                                            <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="#FAFAFA" MaxWidth="260" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="#FAFAFA" MaxWidth="290" TextTrimming="CharacterEllipsis"/>
                                             <TextBlock Text="{Binding Genre}" Foreground="#71717A" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                         </DockPanel>
                                     </Border>
@@ -204,15 +280,17 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                         
-                        <Button x:Name="BtnDelFav" Grid.Row="2" Content="Usuń wybraną stację z listy" Height="24" Margin="0,4,0,0" Background="#191920" Foreground="#EF4444" FontSize="11" Click="BtnDeleteFavorite_Click"/>
+                        <Button x:Name="BtnDelFav" Grid.Row="3" Content="Usuń wybraną stację z listy" Height="24" Margin="0,4,0,0" Background="#191920" Foreground="#EF4444" FontSize="11" Click="BtnDeleteFavorite_Click"/>
                     </Grid>
                 </Border>
             </TabItem>
 
+            <!-- TAB SEARCH: RADIO-BROWSER PRO HD FILTERS -->
             <TabItem x:Name="TabSearchHeader" Header="🔍 Szukaj">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="8">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
@@ -223,21 +301,53 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="TxtSearchQuery" KeyDown="TxtSearchQuery_KeyDown"/>
-                            <Button x:Name="BtnSearchAction" Grid.Column="1" Content="Szukaj" Width="65" Height="28" Margin="6,0,0,0" Click="BtnSearch_Click"/>
+                            <Button x:Name="BtnSearchAction" Grid.Column="1" Content="Szukaj" Width="65" Height="28" Margin="6,0,0,0" Background="#38BDF8" Foreground="#09090B" FontWeight="Bold" Click="BtnSearch_Click"/>
                         </Grid>
-                        <ListBox Grid.Row="1" x:Name="ListSearchResults" Background="Transparent" BorderThickness="0">
+
+                        <!-- HD Filter Bar: Country, Genre, Min Bitrate -->
+                        <Grid Grid.Row="1" Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="ComboSearchCountry" Height="25" FontSize="10.5" Margin="0,0,4,0" SelectedIndex="0">
+                                <ComboBoxItem Content="🌍 Wszystkie kraje" Tag=""/>
+                                <ComboBoxItem Content="🇵🇱 Polska (PL)" Tag="PL"/>
+                                <ComboBoxItem Content="🇬🇧 Wielka Brytania" Tag="GB"/>
+                                <ComboBoxItem Content="🇩🇪 Niemcy (DE)" Tag="DE"/>
+                                <ComboBoxItem Content="🇱🇹 Litwa (LT)" Tag="LT"/>
+                                <ComboBoxItem Content="🇺🇸 USA" Tag="US"/>
+                            </ComboBox>
+                            <ComboBox x:Name="ComboSearchTag" Grid.Column="1" Height="25" FontSize="10.5" Margin="2,0,2,0" SelectedIndex="0">
+                                <ComboBoxItem Content="🎵 Dowolny gatunek" Tag=""/>
+                                <ComboBoxItem Content="🎷 Jazz" Tag="jazz"/>
+                                <ComboBoxItem Content="🎸 Rock / Metal" Tag="rock"/>
+                                <ComboBoxItem Content="🎻 Klasyka" Tag="classical"/>
+                                <ComboBoxItem Content="🎧 Chillout / Ambient" Tag="chillout"/>
+                                <ComboBoxItem Content="📰 Wiadomości / Talk" Tag="news"/>
+                            </ComboBox>
+                            <ComboBox x:Name="ComboSearchBitrate" Grid.Column="2" Height="25" FontSize="10.5" Margin="4,0,0,0" SelectedIndex="0">
+                                <ComboBoxItem Content="📶 Dowolna jakość" Tag="0"/>
+                                <ComboBoxItem Content="✨ Min. 128 kbps" Tag="128"/>
+                                <ComboBoxItem Content="💎 HD ≥ 192 kbps" Tag="192"/>
+                                <ComboBoxItem Content="🔥 HiFi ≥ 256 kbps" Tag="256"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <ListBox Grid.Row="2" x:Name="ListSearchResults" Background="Transparent" BorderThickness="0">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding="8,6" Background="#191920" CornerRadius="6" Margin="0,0,0,3">
                                         <DockPanel>
-                                            <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="#FAFAFA" MaxWidth="260" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding Genre}" Foreground="#71717A" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Medium" Foreground="#FAFAFA" MaxWidth="270" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Genre}" Foreground="#38BDF8" FontSize="10.5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                         </DockPanel>
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Grid Grid.Row="2" Margin="0,6,0,0">
+                        <Grid Grid.Row="3" Margin="0,6,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -249,7 +359,7 @@
                 </Border>
             </TabItem>
 
-            <!-- 12-BAND EQ -->
+            <!-- 12-BAND EQ + NIGHT COMPRESSOR + USER PRESETS -->
             <TabItem x:Name="TabEqHeader" Header="🎚 EQ">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="10">
                     <Grid>
@@ -257,39 +367,69 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <DockPanel Grid.Row="0" Margin="0,0,0,8">
-                            <TextBlock x:Name="LblEqTitle" Text="12-pasmowy korektor graficzny" FontWeight="Bold" FontSize="13"/>
-                            <CheckBox x:Name="ChkAutoLeveler" Content="Auto-Leveler" Foreground="#10B981" FontSize="11" HorizontalAlignment="Right" Checked="ChkAutoLeveler_Changed" Unchecked="ChkAutoLeveler_Changed" IsChecked="True"/>
+                        <DockPanel Grid.Row="0" Margin="0,0,0,6">
+                            <TextBlock x:Name="LblEqTitle" Text="12-pasmowy EQ DSP" FontWeight="Bold" FontSize="12.5"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <CheckBox x:Name="ChkNightCompressor" Content="🌙 Tryb Nocny (Limiter)" Foreground="#A78BFA" FontSize="11" Margin="0,0,10,0" Checked="ChkNightCompressor_Changed" Unchecked="ChkNightCompressor_Changed"/>
+                                <CheckBox x:Name="ChkAutoLeveler" Content="Auto-Leveler" Foreground="#10B981" FontSize="11" Checked="ChkAutoLeveler_Changed" Unchecked="ChkAutoLeveler_Changed" IsChecked="True"/>
+                            </StackPanel>
                         </DockPanel>
-                        <UniformGrid Grid.Row="1" Columns="12" Margin="0,0,0,8">
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq0" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="31" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq1" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="63" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq2" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="125" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq3" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="250" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq4" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="500" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq5" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="1k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq6" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="2k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq7" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="4k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq8" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="8k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq9" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="12k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq10" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="14k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
-                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq11" Orientation="Vertical" Height="140" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="16k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                        <UniformGrid Grid.Row="1" Columns="12" Margin="0,0,0,6">
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq0" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="31" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq1" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="63" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq2" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="125" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq3" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="250" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq4" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="500" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq5" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="1k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq6" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="2k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq7" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="4k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq8" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="8k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq9" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="12k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq10" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="14k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
+                            <StackPanel HorizontalAlignment="Center"><Slider x:Name="SliderEq11" Orientation="Vertical" Height="125" Minimum="-12" Maximum="12" Value="0" ValueChanged="EqSlider_ValueChanged"/><TextBlock Text="16k" FontSize="9" Foreground="#38BDF8" HorizontalAlignment="Center"/></StackPanel>
                         </UniformGrid>
-                        <DockPanel Grid.Row="2">
-                            <Button x:Name="BtnResetEq" Content="Reset" Width="90" Height="26" Click="PresetFlat_Click"/>
-                            <Button x:Name="BtnElecEq" Content="Electronic" Width="90" Height="26" Margin="6,0" Click="PresetElectronic_Click" HorizontalAlignment="Left"/>
-                            <Button x:Name="BtnVocalEq" Content="Vocal" Width="90" Height="26" Click="PresetVocal_Click" HorizontalAlignment="Right"/>
-                        </DockPanel>
+                        
+                        <UniformGrid Grid.Row="2" Columns="6" Rows="2" Margin="0,0,0,6">
+                            <Button x:Name="BtnResetEq" Content="Płaski" Height="24" Margin="2,2" FontSize="10.5" Click="PresetFlat_Click"/>
+                            <Button x:Name="BtnElecEq" Content="Electro" Height="24" Margin="2,2" FontSize="10.5" Click="PresetElectronic_Click"/>
+                            <Button x:Name="BtnVocalEq" Content="Wokal" Height="24" Margin="2,2" FontSize="10.5" Click="PresetVocal_Click"/>
+                            <Button x:Name="BtnRockEq" Content="Rock" Height="24" Margin="2,2" FontSize="10.5" Click="PresetRock_Click"/>
+                            <Button x:Name="BtnBassEq" Content="Bass+" Height="24" Margin="2,2" FontSize="10.5" Click="PresetBass_Click"/>
+                            <Button x:Name="BtnPopEq" Content="Pop" Height="24" Margin="2,2" FontSize="10.5" Click="PresetPop_Click"/>
+                            <Button x:Name="BtnJazzEq" Content="Jazz" Height="24" Margin="2,2" FontSize="10.5" Click="PresetJazz_Click"/>
+                            <Button x:Name="BtnMetalEq" Content="Metal" Height="24" Margin="2,2" FontSize="10.5" Click="PresetMetal_Click"/>
+                            <Button x:Name="BtnClassicalEq" Content="Klasyka" Height="24" Margin="2,2" FontSize="10.5" Click="PresetClassical_Click"/>
+                            <Button x:Name="BtnHipHopEq" Content="Hip-Hop" Height="24" Margin="2,2" FontSize="10.5" Click="PresetHipHop_Click"/>
+                            <Button x:Name="BtnAcousticEq" Content="Akustyk" Height="24" Margin="2,2" FontSize="10.5" Click="PresetAcoustic_Click"/>
+                            <Button x:Name="BtnClubEq" Content="Klub" Height="24" Margin="2,2" FontSize="10.5" Click="PresetClub_Click"/>
+                        </UniformGrid>
+
+                        <Border Grid.Row="3" Background="#191922" CornerRadius="6" Padding="6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtNewPresetName" Text="Mój profil..." FontSize="11" Height="26" Margin="0,0,4,0" GotFocus="TxtCustom_GotFocus"/>
+                                <Button x:Name="BtnSaveUserEq" Grid.Column="1" Content="💾 Zapisz własny" Height="26" Padding="8,2" FontSize="10.5" Background="#10B981" Foreground="#09090B" FontWeight="Bold" Margin="0,0,6,0" Click="BtnSaveUserEq_Click"/>
+                                <ComboBox x:Name="ComboUserPresets" Grid.Column="2" DisplayMemberPath="Name" Height="26" FontSize="11" Margin="0,0,4,0" SelectionChanged="ComboUserPresets_SelectionChanged"/>
+                                <Button x:Name="BtnDelUserEq" Grid.Column="3" Content="🗑 Usuń" Height="26" Padding="6,2" FontSize="10.5" Foreground="#EF4444" Click="BtnDelUserEq_Click"/>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </Border>
             </TabItem>
 
+            <!-- TAB REMOTE -->
             <TabItem x:Name="TabRemoteHeader" Header="📱 Pilot">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="14">
                     <StackPanel>
                         <TextBlock x:Name="LblRemoteHeader" Text="Sterowanie z telefonu (Web Remote)" FontWeight="Bold" Margin="0,0,0,6"/>
-                        <TextBlock x:Name="LblRemoteDesc" Text="Otwórz poniższy adres w przeglądarce smartfona w tej samej sieci Wi-Fi:" FontSize="11" Foreground="#71717A" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                        <TextBlock x:Name="LblRemoteDesc" Text="Otwórz poniższy adres w przeglądarce smartfona w tej samej sieci Wi-Fi (pełny pilot z listą stacji i okładkami):" FontSize="11" Foreground="#71717A" TextWrapping="Wrap" Margin="0,0,0,12"/>
                         <Border Background="#181820" CornerRadius="8" Padding="12" Margin="0,0,0,12">
                             <StackPanel HorizontalAlignment="Center">
                                 <TextBlock Text="Adres pilota:" FontSize="11" Foreground="#A1A1AA" HorizontalAlignment="Center"/>
@@ -304,54 +444,120 @@
                 </Border>
             </TabItem>
 
-            <TabItem x:Name="TabPlannerHeader" Header="📅 Planer">
-                <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="12">
+            <!-- TAB PLANNER: RADIO ALARM + CYCLICAL AUDIO DVR -->
+            <TabItem x:Name="TabPlannerHeader" Header="⏰ Budzik / DVR">
+                <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name="LblPlannerTitle" Grid.Row="0" Text="Zaplanowane nagrania audycji do MP3" FontWeight="Bold" Margin="0,0,0,8"/>
-                        <ListBox Grid.Row="1" x:Name="ListSchedules" Background="Transparent" BorderThickness="0">
+
+                        <!-- Inteligentny Budzik Radiowy -->
+                        <Border Grid.Row="0" Background="#191922" BorderBrush="#38BDF8" BorderThickness="1" CornerRadius="8" Padding="8" Margin="0,0,0,8">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,4">
+                                    <TextBlock Text="⏰ Inteligentny Budzik Radiowy (Radio Alarm)" FontWeight="Bold" FontSize="11.5" Foreground="#38BDF8"/>
+                                    <CheckBox x:Name="ChkAlarmEnabled" Content="Aktywny" Foreground="#10B981" FontWeight="Bold" FontSize="11" HorizontalAlignment="Right" Checked="ChkAlarm_Changed" Unchecked="ChkAlarm_Changed"/>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="75"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="TxtAlarmTime" Text="07:00" TextAlignment="Center" FontWeight="Bold" Foreground="#FAFAFA" Margin="0,0,6,0"/>
+                                    <ComboBox x:Name="ComboAlarmStation" Grid.Column="1" DisplayMemberPath="Name" Height="26" Margin="0,0,6,0"/>
+                                    <Button Grid.Column="2" Content="Zapisz" Padding="10,4" Background="#38BDF8" Foreground="#09090B" FontWeight="Bold" Click="BtnSaveAlarm_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Cyclical Audio DVR Builder -->
+                        <Border Grid.Row="1" Background="#191922" BorderBrush="#2D2D3A" BorderThickness="1" CornerRadius="8" Padding="8" Margin="0,0,0,6">
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,6">
+                                    <TextBlock x:Name="LblPlannerTitle" Text="📅 Cykliczny Harmonogram DVR (MP3)" FontWeight="Bold" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <CheckBox x:Name="ChkDvrAutoSplit" Content="Auto-dzielenie utworów" Foreground="#F59E0B" FontSize="10.5" HorizontalAlignment="Right" IsChecked="True" Checked="ChkDvrAutoSplit_Changed" Unchecked="ChkDvrAutoSplit_Changed"/>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="115"/>
+                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox x:Name="ComboDvrDay" Height="26" FontSize="11" Margin="0,0,4,0" SelectedIndex="0">
+                                        <ComboBoxItem Content="Codziennie" Tag="EVERYDAY"/>
+                                        <ComboBoxItem Content="Poniedziałek" Tag="1"/>
+                                        <ComboBoxItem Content="Wtorek" Tag="2"/>
+                                        <ComboBoxItem Content="Środa" Tag="3"/>
+                                        <ComboBoxItem Content="Czwartek" Tag="4"/>
+                                        <ComboBoxItem Content="Piątek" Tag="5"/>
+                                        <ComboBoxItem Content="Sobota" Tag="6"/>
+                                        <ComboBoxItem Content="Niedziela" Tag="0"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="TxtDvrTime" Grid.Column="1" Text="20:00" TextAlignment="Center" FontSize="11" Height="26" Margin="0,0,4,0"/>
+                                    <TextBox x:Name="TxtDvrDuration" Grid.Column="2" Text="60" TextAlignment="Center" FontSize="11" Height="26" Margin="0,0,4,0" ToolTip="Czas trwania w minutach"/>
+                                    <Button x:Name="BtnAddSchedule" Grid.Column="3" Content="➕ Dodaj audycję" Height="26" Background="#10B981" Foreground="#09090B" FontWeight="Bold" FontSize="11" Click="BtnAddScheduleCurrent_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <ListBox Grid.Row="2" x:Name="ListSchedules" Background="Transparent" BorderThickness="0">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Padding="8,6" Background="#191920" CornerRadius="6" Margin="0,0,0,4">
+                                    <Border Padding="8,5" Background="#191920" CornerRadius="6" Margin="0,0,0,3">
                                         <DockPanel>
-                                            <TextBlock Text="{Binding StationName}" FontWeight="SemiBold" Foreground="#38BDF8"/>
-                                            <TextBlock Text="{Binding StartTime, StringFormat=' ({0:hh\\:mm})'}" Foreground="#A1A1AA"/>
-                                            <TextBlock Text="{Binding DurationMinutes, StringFormat=' - {0} min'}" Foreground="#71717A"/>
+                                            <TextBlock Text="{Binding SummaryText}" FontWeight="SemiBold" Foreground="#38BDF8" FontSize="11.5"/>
                                         </DockPanel>
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button x:Name="BtnAddSchedule" Grid.Row="2" Content="➕ Zaplanuj nagranie bieżącej stacji na 60 min" Height="28" Margin="0,8,0,0" Click="BtnAddScheduleCurrent_Click"/>
+                        <Button x:Name="BtnDelSchedule" Grid.Row="3" Content="🗑 Usuń zaznaczone zadanie z harmonogramu" Height="25" Margin="0,6,0,0" Foreground="#EF4444" FontSize="11" Click="BtnDeleteSchedule_Click"/>
                     </Grid>
                 </Border>
             </TabItem>
 
+            <!-- TAB HISTORY -->
             <TabItem x:Name="TabHistoryHeader" Header="🕒 Historia">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="8">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <ListBox x:Name="ListHistory" Background="Transparent" BorderThickness="0">
+
+                        <Grid Grid.Row="0" Margin="0,0,0,6">
+                            <TextBox x:Name="TxtFilterHistory" Height="26" TextChanged="TxtFilterHistory_TextChanged" Padding="6,3"/>
+                            <TextBlock x:Name="TxtHistoryPlaceholder" Text="🔍 Filtruj po dacie (np. 2026-11-15), stacji lub tytule..." FontSize="10" Foreground="#64748B" IsHitTestVisible="False" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        </Grid>
+
+                        <ListBox Grid.Row="1" x:Name="ListHistory" Background="Transparent" BorderThickness="0">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding="8,6" Background="#191920" CornerRadius="6" Margin="0,0,0,4">
-                                        <TextBlock Text="{Binding}" Foreground="#FAFAFA" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding DisplayText}" Foreground="#FAFAFA" TextTrimming="CharacterEllipsis"/>
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button x:Name="BtnSearchYT" Grid.Row="1" Content="Wyszukaj zaznaczony utwór na YouTube" Height="28" Margin="0,6,0,0" Click="BtnSearchYouTube_Click"/>
+
+                        <UniformGrid Grid.Row="2" Columns="4" Margin="0,6,0,0">
+                            <Button x:Name="BtnSearchYT" Content="▶ Szukaj na YouTube" Height="28" Margin="0,0,3,0" FontSize="10.5" Click="BtnSearchYouTube_Click"/>
+                            <Button x:Name="BtnExportHistCsv" Content="📊 Eksport CSV" Height="28" Margin="3,0,3,0" FontSize="10.5" Click="BtnExportHistoryCsv_Click"/>
+                            <Button x:Name="BtnExportHistTxt" Content="📄 Eksport TXT" Height="28" Margin="3,0,3,0" FontSize="10.5" Click="BtnExportHistoryTxt_Click"/>
+                            <Button x:Name="BtnClearHist" Content="🗑 Wyczyść" Height="28" Margin="3,0,0,0" FontSize="10.5" Foreground="#EF4444" Click="BtnClearHistory_Click"/>
+                        </UniformGrid>
                     </Grid>
                 </Border>
             </TabItem>
 
+            <!-- TAB TIMER -->
             <TabItem x:Name="TabTimerHeader" Header="⏱ Timer">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="14">
                     <StackPanel>
@@ -368,44 +574,89 @@
                 </Border>
             </TabItem>
 
+            <!-- TAB SHOPPING / VINYL DEALS -->
+            <TabItem Header="💿 Płyty (Sklepy)">
+                <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="💿 Oferty płytowe (Allegro • eBay • iMusic.pl)" FontWeight="Bold" FontSize="12" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                        <DockPanel Grid.Row="1" Margin="0,0,0,8">
+                            <TextBox x:Name="TxtShopQuery" Text="" Height="28" Margin="0,0,6,0" GotFocus="TxtCustom_GotFocus"/>
+                            <Button x:Name="BtnShopSearch" Content="🔍 Szukaj w sklepach" Width="130" Height="28" Background="#38BDF8" Foreground="#09090B" FontWeight="Bold" Click="BtnShopSearch_Click"/>
+                        </DockPanel>
+                        <ListBox Grid.Row="2" x:Name="ListShopOffers" Background="Transparent" BorderThickness="0" MouseDoubleClick="ListShopOffers_MouseDoubleClick">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="10,8" Background="#191920" CornerRadius="6" Margin="0,0,0,4" Cursor="Hand">
+                                        <DockPanel>
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Border Background="#22222C" CornerRadius="4" Padding="6,2" Margin="0,0,6,0">
+                                                    <TextBlock Text="{Binding ConditionLabel}" FontSize="10" FontWeight="Bold" Foreground="#10B981"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding Price, StringFormat='{} {0:N2}'}" FontWeight="Bold" FontSize="13" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Currency}" FontSize="10" Foreground="#A1A1AA" VerticalAlignment="Center" Margin="3,0,0,0"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontWeight="Medium" Foreground="#FAFAFA" MaxWidth="250" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </TabItem>
+
+            <!-- TAB OPTIONS -->
             <TabItem x:Name="TabOptionsHeader" Header="⚙ Opcje">
                 <Border Background="#CC121216" CornerRadius="0,6,6,6" Padding="14">
-                    <StackPanel>
-                        <TextBlock x:Name="LblSpotifyHeader" Text="Integracja ze Spotify (API)" FontWeight="Bold" Foreground="#1DB954" Margin="0,0,0,8"/>
-                        <TextBlock x:Name="LblSpotifyDesc" Text="Client ID aplikacji Spotify:" FontSize="11" Foreground="#A1A1AA" Margin="0,0,0,4"/>
-                        <DockPanel Margin="0,0,0,10">
-                            <TextBox x:Name="TxtSpotifyClientId" Margin="0,0,6,0"/>
-                            <Button x:Name="BtnSpotifyAuth" Content="Autoryzuj" Width="80" Height="28" Background="#1DB954" Foreground="#09090B" FontWeight="Bold" Click="BtnSpotifyLogin_Click"/>
-                        </DockPanel>
-                        <TextBlock x:Name="TxtSpotifyStatus" Text="" FontSize="11" Foreground="#10B981" Margin="0,0,0,10"/>
-                        
-                        <Separator Background="#222228" Margin="0,0,0,10"/>
-                        <TextBlock x:Name="LblLangSelect" Text="Język interfejsu / Language / Sprache:" FontSize="11" Foreground="#A1A1AA" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="ComboLangOptions" Width="140" HorizontalAlignment="Left" Height="28" Margin="0,0,0,10" SelectionChanged="ComboLang_SelectionChanged" Background="#1E1E24" Foreground="White">
-                            <ComboBoxItem Content="🇵🇱 Polski (PL)"/>
-                            <ComboBoxItem Content="🇬🇧 English (EN)"/>
-                            <ComboBoxItem Content="🇱🇹 Lietuvių (LT)"/>
-                            <ComboBoxItem Content="🇩🇪 Deutsch (DE)"/>
-                        </ComboBox>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="Wygląd i uruchamianie systemu" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                            
+                            <TextBlock x:Name="LblLangSelect" Text="Język interfejsu / Language / Sprache:" FontSize="11" Foreground="#A1A1AA" Margin="0,0,0,4"/>
+                            <ComboBox x:Name="ComboLangOptions" Width="170" HorizontalAlignment="Left" Height="28" Margin="0,0,0,10" SelectionChanged="ComboLang_SelectionChanged" Background="#1E1E24" Foreground="White">
+                                <ComboBoxItem Content="🇵🇱 Polski (PL)"/>
+                                <ComboBoxItem Content="🇬🇧 English (EN)"/>
+                                <ComboBoxItem Content="🇱🇹 Lietuvių (LT)"/>
+                                <ComboBoxItem Content="🇩🇪 Deutsch (DE)"/>
+                            </ComboBox>
 
-                        <CheckBox x:Name="ChkCoverArt" Content="Okładki albumów na żywo (iTunes)" Foreground="#FAFAFA" FontSize="11" Margin="0,0,0,6" Checked="ChkCoverArt_Changed" Unchecked="ChkCoverArt_Changed" IsChecked="True"/>
-                        
-                        <DockPanel Margin="0,4,0,0">
-                            <Button x:Name="BtnOpenRecs" Content="📂 Nagrania (MP3)" Height="28" Width="130" Click="BtnOpenRecordsFolder_Click"/>
-                        </DockPanel>
-                    </StackPanel>
+                            <CheckBox x:Name="ChkDarkTheme" Content="Ciemny motyw interfejsu (Dark Mode OGŚ)" Foreground="#FAFAFA" FontSize="11" Margin="0,0,0,8" Checked="ChkDarkTheme_Changed" Unchecked="ChkDarkTheme_Changed" IsChecked="True"/>
+                            <CheckBox x:Name="ChkAutostart" Content="Uruchamiaj RADYJKO PRO razem z systemem Windows" Foreground="#FAFAFA" FontSize="11" Margin="0,0,0,8" Checked="ChkAutostart_Changed" Unchecked="ChkAutostart_Changed"/>
+                            <CheckBox x:Name="ChkResumeStartup" Content="Wznów odtwarzanie ostatniej stacji po starcie" Foreground="#FAFAFA" FontSize="11" Margin="0,0,0,8" Checked="ChkResumeStartup_Changed" Unchecked="ChkResumeStartup_Changed"/>
+                            <CheckBox x:Name="ChkCoverArt" Content="Okładki albumów na żywo (iTunes + Windows OSD)" Foreground="#FAFAFA" FontSize="11" Margin="0,0,0,12" Checked="ChkCoverArt_Changed" Unchecked="ChkCoverArt_Changed" IsChecked="True"/>
+                            
+                            <Separator Background="#222228" Margin="0,0,0,12"/>
+                            <TextBlock Text="Zarządzanie stacjami (Kopia zapasowa):" FontWeight="Bold" FontSize="12" Foreground="#FAFAFA" Margin="0,0,0,6"/>
+                            <UniformGrid Columns="2" Margin="0,0,0,14">
+                                <Button x:Name="BtnExportFavs" Content="📤 Eksportuj stacje (JSON)" Height="30" Margin="0,0,4,0" Click="BtnExportFavorites_Click"/>
+                                <Button x:Name="BtnImportFavs" Content="📥 Importuj stacje (JSON)" Height="30" Margin="4,0,0,0" Click="BtnImportFavorites_Click"/>
+                            </UniformGrid>
+
+                            <Separator Background="#222228" Margin="0,0,0,12"/>
+                            <TextBlock Text="Nagrania audycji (Audio DVR):" FontWeight="Bold" FontSize="12" Foreground="#FAFAFA" Margin="0,0,0,6"/>
+                            <DockPanel Margin="0,2,0,0">
+                                <Button x:Name="BtnOpenRecs" Content="📂 Folder nagrań (MP3)" Height="30" Width="200" HorizontalAlignment="Left" Click="BtnOpenRecordsFolder_Click"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Border>
             </TabItem>
         </TabControl>
 
-        <Border Grid.Row="4" Background="#CC141418" CornerRadius="6" Padding="8,5" Margin="0,8,0,0">
+        <!-- FOOTER -->
+        <Border Grid.Row="5" Background="#CC141418" CornerRadius="6" Padding="8,5" Margin="0,8,0,0">
             <DockPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="TxtDiagCodec" Text="MP3" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,8,0"/>
                     <TextBlock x:Name="TxtDiagBitrate" Text="128 kbps" FontSize="10" Foreground="#A1A1AA" Margin="0,0,8,0"/>
                     <TextBlock x:Name="TxtRecordingIndicator" Text="" FontSize="10" Foreground="#EF4444" FontWeight="Bold" Margin="6,0,0,0"/>
                 </StackPanel>
-                <TextBlock Text="RADYJKO 3.3.0 • OGŚ" FontSize="10" Foreground="#52525B" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBlock Text="RADYJKO PRO 5.0.0 FINAL • OGŚ" FontSize="10" Foreground="#52525B" HorizontalAlignment="Right" VerticalAlignment="Center"/>
             </DockPanel>
         </Border>
     </Grid>

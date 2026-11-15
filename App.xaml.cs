@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace RADYJKO;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -16,7 +16,7 @@ public partial class App : Application
     {
         try
         {
-            File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "radyjko_crash_3_3.txt"), ex?.ToString() ?? "");
+            File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "radyjko_crash_5_0.txt"), ex?.ToString() ?? "");
         }
         catch { }
     }

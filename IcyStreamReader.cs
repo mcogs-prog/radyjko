@@ -13,13 +13,13 @@ public class StreamDiagnostics
     public string Codec { get; set; } = "MP3";
     public string Bitrate { get; set; } = "128 kbps";
     public string SampleRate { get; set; } = "44.1 kHz";
-    public string Status { get; set; } = "Połączono";
+    public string Status { get; set; } = "Połączono (TLS/Safe)";
 }
 
 public class IcyMetadataClient : IDisposable
 {
     private CancellationTokenSource? _cts;
-    private static readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(10) };
+    private static readonly HttpClient _httpClient = SecurityManager.CreateSecureHttpClient(10, true);
 
     public event Action<string>? TitleReceived;
     public event Action<StreamDiagnostics>? DiagnosticsReceived;
@@ -28,6 +28,8 @@ public class IcyMetadataClient : IDisposable
     public void StartMonitoring(string streamUrl)
     {
         Stop();
+        if (!SecurityManager.IsSafeStreamUrl(streamUrl)) return;
+
         _cts = new CancellationTokenSource();
         var token = _cts.Token;
 
@@ -42,7 +44,6 @@ public class IcyMetadataClient : IDisposable
                     request.Version = new Version(1, 1);
                     request.Headers.ConnectionClose = true;
                     request.Headers.Add("Icy-MetaData", "1");
-                    request.Headers.Add("User-Agent", "VLC/3.0.0");
 
                     using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
                     if (!response.IsSuccessStatusCode) { retryCount++; await Task.Delay(2000, token); continue; }
@@ -51,7 +52,7 @@ public class IcyMetadataClient : IDisposable
                     var diag = new StreamDiagnostics();
                     if (response.Headers.TryGetValues("icy-br", out var brVals))
                     {
-                        foreach (var b in brVals) { diag.Bitrate = $"{b} kbps"; break; }
+                        foreach (var b in brVals) { diag.Bitrate = $"{SecurityManager.SanitizeTrackTitle(b)} kbps"; break; }
                     }
                     if (response.Content.Headers.ContentType != null)
                     {
@@ -69,7 +70,7 @@ public class IcyMetadataClient : IDisposable
                         foreach (var v in values) if (int.TryParse(v, out int parsed)) { metaInt = parsed; break; }
                     }
 
-                    if (metaInt <= 0) { TitleReceived?.Invoke(string.Empty); return; }
+                    if (metaInt <= 0 || metaInt > 131072) { TitleReceived?.Invoke(string.Empty); return; }
 
                     using var stream = await response.Content.ReadAsStreamAsync(token);
                     byte[] audioBuffer = new byte[metaInt];
@@ -89,7 +90,7 @@ public class IcyMetadataClient : IDisposable
                         if (lenRead <= 0) break;
 
                         int metaLen = lengthByte[0] * 16;
-                        if (metaLen > 0)
+                        if (metaLen > 0 && metaLen <= SecurityManager.MaxMetadataBytes)
                         {
                             byte[] metaBuffer = new byte[metaLen];
                             int mRead = 0;
@@ -101,7 +102,10 @@ public class IcyMetadataClient : IDisposable
                             }
                             string metaString = Encoding.UTF8.GetString(metaBuffer);
                             var match = Regex.Match(metaString, @"StreamTitle='([^']*)'");
-                            if (match.Success) TitleReceived?.Invoke(match.Groups[1].Value.Trim());
+                            if (match.Success)
+                            {
+                                TitleReceived?.Invoke(SecurityManager.SanitizeTrackTitle(match.Groups[1].Value));
+                            }
                         }
                     }
                 }

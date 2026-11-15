@@ -1,0 +1,15 @@
+# .NET / Visual Studio build outputs
+bin/
+obj/
+publish/
+dist/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Temporary & crash files
+*.tmp
+*.log
+radyjko_crash_*.txt

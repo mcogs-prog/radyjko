@@ -5,21 +5,23 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>assets/app_icon.ico</ApplicationIcon>
     <AssemblyName>RADYJKO</AssemblyName>
     <RootNamespace>RADYJKO</RootNamespace>
     <Company>OGŚ</Company>
     <Authors>OGŚ</Authors>
-    <Product>RADYJKO</Product>
-    <Description>Odtwarzacz radia cyfrowego wielojęzyczny (PL / EN / LT / DE)</Description>
-    <Version>3.3.0</Version>
-    <FileVersion>3.3.0.0</FileVersion>
-    <AssemblyVersion>3.3.0.0</AssemblyVersion>
+    <Product>RADYJKO PRO 5.0.0 FINAL</Product>
+    <Description>Odtwarzacz radia cyfrowego PRO v5.0 (Secure TLS 1.3, Time-Shifting, Allegro/eBay/iMusic, WASAPI ID)</Description>
+    <Version>5.0.0</Version>
+    <FileVersion>5.0.0.0</FileVersion>
+    <AssemblyVersion>5.0.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets/app_icon.ico" />
+    <Resource Include="assets/app_icon.png" />
   </ItemGroup>
 </Project>

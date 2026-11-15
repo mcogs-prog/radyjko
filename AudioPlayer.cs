@@ -18,12 +18,18 @@ public class AudioPlayer : IDisposable
 
     public float CurrentVolume { get; private set; } = 0.75f;
     public bool IsAutoLevelerEnabled { get; set; } = true;
+    public bool IsNightCompressorEnabled { get; set; } = false;
     public float[] BandGains { get; } = new float[12];
+
+    public bool IsTimeShifted => _dspProvider?.IsTimeShifted ?? false;
+    public bool IsTimeShiftPaused => _dspProvider?.IsTimeShiftPaused ?? false;
+    public int TimeShiftSecondsBehind => _dspProvider?.SecondsBehind ?? 0;
 
     public event Action<string>? PlaybackStateChanged;
     public event Action<string>? TrackChanged;
     public event Action<StreamDiagnostics>? DiagnosticsChanged;
     public event Action<float[]>? SpectrumData;
+    public event Action<float, float>? VuMeterData;
     public event Action<Exception>? PlaybackError;
 
     public bool IsPlaying => _outputDevice?.PlaybackState == PlaybackState.Playing;
@@ -60,10 +66,15 @@ public class AudioPlayer : IDisposable
                 _reader = new MediaFoundationReader(_currentUrl);
 
                 var sampleProvider = _reader.ToSampleProvider();
-                _dspProvider = new AudioDspSampleProvider(sampleProvider) { IsAutoLevelerEnabled = IsAutoLevelerEnabled };
+                _dspProvider = new AudioDspSampleProvider(sampleProvider)
+                {
+                    IsAutoLevelerEnabled = IsAutoLevelerEnabled,
+                    IsNightCompressorEnabled = IsNightCompressorEnabled
+                };
                 for (int i = 0; i < 12; i++) _dspProvider.BandGains[i] = BandGains[i];
                 _dspProvider.UpdateFilters();
                 _dspProvider.FftCalculated += data => SpectrumData?.Invoke(data);
+                _dspProvider.VuMeterCalculated += (l, r) => VuMeterData?.Invoke(l, r);
 
                 _outputDevice = new WaveOutEvent { DesiredLatency = 300 };
                 _outputDevice.Init(_dspProvider);
@@ -83,6 +94,16 @@ public class AudioPlayer : IDisposable
             PlaybackError?.Invoke(ex);
         }
     }
+
+    public void ToggleTimeShiftPause()
+    {
+        if (_dspProvider == null) return;
+        _dspProvider.IsTimeShiftPaused = !_dspProvider.IsTimeShiftPaused;
+    }
+
+    public void RewindSeconds(int sec) => _dspProvider?.RewindSeconds(sec);
+    public void ForwardSeconds(int sec) => _dspProvider?.ForwardSeconds(sec);
+    public void JumpToLive() => _dspProvider?.JumpToLive();
 
     private void TriggerCrossfadeOut()
     {
@@ -114,6 +135,8 @@ public class AudioPlayer : IDisposable
     }
 
     public void SetAutoLeveler(bool enabled) { IsAutoLevelerEnabled = enabled; if (_dspProvider != null) _dspProvider.IsAutoLevelerEnabled = enabled; }
+    public void SetNightCompressor(bool enabled) { IsNightCompressorEnabled = enabled; if (_dspProvider != null) _dspProvider.IsNightCompressorEnabled = enabled; }
+
     public void ApplyBandGain(int bandIndex, float gainDb)
     {
         if (bandIndex >= 0 && bandIndex < 12)
